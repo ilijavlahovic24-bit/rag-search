@@ -10,14 +10,14 @@ The goal is to demonstrate understanding of retrieval mechanisms from the inside
 
 ```
 mini-rag/
-├── index/         # HNSW (core), BM25, hybrid (RRF) fusion
+├── index/          # HNSW (core), BM25, hybrid (RRF) fusion
 ├── embeddings/     # sentence-transformers encoder
 ├── rerank/         # optional cross-encoder second pass
 ├── data/           # BEIR loader, embedding cache
 ├── eval/           # recall@k, nDCG@k, FAISS baseline comparison
 ├── api/            # FastAPI app (/index, /search)
 ├── benchmarks/     # latency/throughput scripts
-└── report/         # write-up
+└── doc/            # write-up, references
 ```
 
 ## Key decisions
