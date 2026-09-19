@@ -4,7 +4,7 @@ A search engine with a custom HNSW vector index implemented from scratch (not a 
 
 ## Motivation
 
-The goal is to demonstrate understanding of retrieval mechanisms from the inside out, not just using off-the-shelf libraries - the same principle behind the other systems projects in this portfolio (implement the mechanism, don't rely on a black box). Directly relevant to positions like **Perplexity** (backend search optimization), and paired with **DistillBench** as a two-project combination aimed at Perplexity/JetBrains roles.
+The goal is to demonstrate understanding of retrieval mechanisms from the inside out, not just using off-the-shelf libraries (implement the mechanism, don't rely on a black box). 
 
 ## Architecture
 
@@ -37,13 +37,6 @@ mini-rag/
 - Optional: nDCG improvement after cross-encoder re-ranking
 - Latency benchmark (p50/p95) as a function of index size
 
-## Status
-
-Development plan defined (phases: setup → HNSW from scratch → BM25 → hybrid retrieval → optional re-ranking → FastAPI service + report), implementation not yet started. Being worked on in parallel with **DistillBench**, ahead of the GFCS-R rotation.
-
-## Estimated duration
-
-~5-7 weeks at a ~2-2.5h/day slot.
 
 ## Resources
 
