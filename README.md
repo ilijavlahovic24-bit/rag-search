@@ -39,6 +39,10 @@ mini-rag/
 
 
 ## Resources
+1. (["https://huggingface.co/blog/ngxson/make-your-own-rag"]) Create A simple RAG Hugging Face- starter tutorial
+2. Malkov & Yashunin 2016/2018 (HNSW paper)
+3. Johnson et al. 2017 (FAISS)
+4. Karpukhin et al. 2020 (DPR)
+5. Nogueira & Cho 2019 (BERT re-ranking)
 
-Malkov & Yashunin 2016/2018 (HNSW paper), Johnson et al. 2017 (FAISS), Karpukhin et al. 2020 (DPR), Nogueira & Cho 2019 (BERT re-ranking)
 
