@@ -6,7 +6,7 @@ from collections.abc import Callable
 import numpy as np
 
 from data.beir_loader import load_beir
-from embeddings.encoder import Encoder
+from embeding_model.encoder import Encoder
 from eval.metrics import ndcg_at_k, recall_at_k
 from index.bm25 import BM25Index
 from index.hnsw import HNSW
