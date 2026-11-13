@@ -23,3 +23,17 @@ def ndcg_at_k(retrieved: Sequence[str], relevant: Mapping[str, int], k: int) -> 
     ideal = sorted((rel for rel in relevant.values() if rel > 0), reverse=True)[:k]
     idcg = sum((2**rel - 1) / math.log2(i + 1) for i, rel in enumerate(ideal, start=1))
     return dcg / idcg if idcg > 0 else 0.0
+def mrr_at_k(
+    retrieved: Sequence[str],
+    relevant: Mapping[str, int],
+    k: int,
+) -> float:
+    """Mean Reciprocal Rank contribution for a single query.
+
+    Returns 1/rank of the first relevant document in the top-k, or 0.0 if
+    no relevant document is retrieved within k.
+    """
+    for i, doc_id in enumerate(retrieved[:k], start=1):
+        if relevant.get(doc_id, 0) > 0:
+            return 1.0 / i
+    return 0.0

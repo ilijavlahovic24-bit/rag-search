@@ -37,6 +37,58 @@ mini-rag/
 - Optional: nDCG improvement after cross-encoder re-ranking
 - Latency benchmark (p50/p95) as a function of index size
 
+##  Benchmarks (BEIR SciFact)
+
+*Dataset: SciFact (5,183 docs, 300 test queries). Embeddings: `all-MiniLM-L6-v2` (dim=384). HNSW Params: M=16, efConstruction=200, efSearch=128.*
+
+### 1. Retrieval Quality
+Combining dense and sparse retrieval (Hybrid RRF) outperforms either method individually. Cross-encoder re-ranking pushes precision even higher.
+
+| Mode | nDCG@10 | Recall@10 | MRR@10 |
+|---|---|---|---|
+| Dense (Our HNSW) | 0.6451 | 0.7833 | 0.6047 |
+| Sparse (BM25) | 0.6523 | 0.7757 | 0.6184 |
+| **Hybrid (RRF)** | **0.6821** | **0.8209** | **0.6426** |
+| **Hybrid + Re-rank** | **0.6933** | **0.8222** | **0.6610** |
+
+> *Insight: Hybrid fusion improves nDCG@10 by +3.7 percentage points over dense-only retrieval.*
+
+### 2. HNSW vs. FAISS (Correctness & Latency)
+
+Our pure-Python HNSW implementation achieves **identical retrieval quality** to FAISS (C++) at the same hyperparameters, proving algorithmic correctness.
+
+| Metric | Our HNSW (Python) | FAISS HNSW (C++) | Delta |
+|---|---|---|---|
+| nDCG@10 | 0.6451 | 0.6451 | +0.00 pp (Parity) |
+| Recall@10 | 0.7833 | 0.7833 | +0.00 pp (Parity) |
+| Indexing time | 16.39 s | 0.23 s | **70.5x faster** (FAISS) |
+| Query p50 (ms) | 14.22 ms | 11.11 ms | **1.3x faster** (FAISS) |
+
+> *Insight: While C++ FAISS dominates in indexing speed, my Python HNSW is competitive in **query latency** (only 1.3x slower), proving that graph traversal overhead is minimal in Python.*
+
+### 3. Query Latency Trade-offs
+
+| Mode | p50 (ms) | p95 (ms) | Mean (ms) |
+|---|---|---|---|
+| Dense (HNSW) | 14.22 | 16.64 | 14.31 |
+| Sparse (BM25) | 14.36 | 26.28 | 15.23 |
+| Hybrid (RRF) | 32.46 | 48.24 | 33.94 |
+| Hybrid + Re-rank | 2840.04 | 3194.67 | 2857.70 |
+
+> *Insight: Cross-encoder re-ranking provides a +1.1 pp nDCG boost but costs ~2.8s per query on CPU, highlighting the classic latency-accuracy trade-off.*
+
+### 4. ef_search Sensitivity (Dense Branch)
+
+| ef_search | Recall@10 |
+|---|---|
+| 10 | 0.8160 |
+| 20 | 0.8520 |
+| 50 | 0.8720 |
+| 100 | 0.8720 |
+| 200 | 0.8720 |
+| 400 | 0.8720 |
+
+> *Insight: Recall plateaus at `ef_search >= 50`, confirming the algorithm's sensitivity to the search frontier width and providing a clear tuning target for production.*
 
 ## Resources
 1. (["https://huggingface.co/blog/ngxson/make-your-own-rag"]) Create A simple RAG Hugging Face- starter tutorial
